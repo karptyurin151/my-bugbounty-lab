@@ -14,7 +14,7 @@ tasks:
       pip3 install sqlmap
 
       # Install Dalfox (XSS)
-      go install github.com/dproject/dalfox@latest
+      go install github.com/hahwul/dalfox/v2@latest
 
       # Install Recon Tools
       go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
