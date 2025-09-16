@@ -22,7 +22,9 @@ tasks:
 
       echo "✅ All tools installed. Happy hunting."
 
-    command: echo "💡 Run 'nuclei -h' or 'sqlmap -h' to start scanning."
+    command: |
+      echo "💡 Run 'nuclei -h' or 'sqlmap -h' to start scanning."
+      bash
 
 vscode:
   extensions:
