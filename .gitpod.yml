@@ -23,7 +23,7 @@ tasks:
       go install -v github.com/projectdiscovery/notify/cmd/notify@latest
       
       # Устанавливаем Python инструменты
-      pip3 install sqlmap==1.10.0 dirsearch arjun
+      pip3 install sqlmap
       
       # Обновляем Nuclei templates
       nuclei -update-templates
