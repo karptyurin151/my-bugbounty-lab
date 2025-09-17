@@ -1,25 +1,47 @@
-init: |
-  echo "🚀 Installing Bug Bounty Tools..."
-  
-  # Установка системных зависимостей
-  sudo apt update && sudo apt upgrade -y
-  sudo apt install -y python3-pip chromium-browser unzip libpcap-dev libnet-dev
-  
-  # Настройка PATH для Go
+image: gitpod/workspace-full  # Оставляем полноценный образ
+
+tasks:
+  - name: Install Bug Bounty Tools
+    init: |
+      echo "🚀 Installing Bug Bounty Toolkit..."
+      
+      # Обновляем систему и ставим основные зависимости
+      sudo apt update && sudo apt upgrade -y
+      sudo apt install -y python3-pip chromium-browser unzip libpcap-dev libnet-dev
+      
+      # Настройка PATH для Go
   echo 'export PATH="$HOME/go/bin:/go/bin:$HOME/.local/bin:$PATH"' >> ~/.bashrc
   source ~/.bashrc
-  
-  # Установка Go инструментов с явным указанием версий
-  go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
-  go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-  go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-  go install -v github.com/projectdiscovery/katana/cmd/katana@latest
-  go install -v github.com/hahwul/dalfox/v2@latest
-  
-  # Установка Python инструментов
-  pip3 install sqlmap==1.10.0 dirsearch arjun
-  
-  # Обновление templates
-  nuclei -update-templates
-  
-  echo "✅ Все инструменты установлены! Счастливой охоты!"
+      
+      # Устанавливаем Go инструменты
+      go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+      go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+      go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+      go install -v github.com/projectdiscovery/katana/cmd/katana@latest
+      go install -v github.com/hahwul/dalfox/v2@latest
+      go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
+      go install -v github.com/projectdiscovery/notify/cmd/notify@latest
+      
+      # Устанавливаем Python инструменты
+      pip3 install sqlmap==1.10.0 dirsearch arjun
+      
+      # Обновляем Nuclei templates
+      nuclei -update-templates
+      
+      # Создаем директорию для инструментов
+      mkdir -p ~/tools
+      echo "✅ Все инструменты установлены! Счастливой охоты!"
+
+    command: |
+      echo "💡 Доступные команды:"
+      echo "  nuclei -h | sqlmap -h | subfinder -h | httpx -h"
+      echo "  dalfox -h | naabu -h | katana -h | dirsearch -h"
+      bash
+
+vscode:
+  extensions:
+    - ms-python.python
+    - github.copilot
+    - projectdiscovery.nuclei
+    - humao.rest-client
+    - me-dut.abyss
