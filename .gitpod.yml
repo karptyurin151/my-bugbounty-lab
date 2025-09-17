@@ -1,32 +1,49 @@
-image: gitpod/workspace-full
+image: gitpod/workspace-full  # Оставляем полноценный образ
 
 tasks:
-  - name: Install Hacking Tools
+  - name: Install Bug Bounty Tools
     init: |
-      echo "🚀 Installing Nuclei, SQLmap, Dalfox..."
+      echo "🚀 Installing Bug Bounty Toolkit..."
       
-      # Install Nuclei
-      sudo apt update && sudo apt install -y golang git
+      # Обновляем систему и ставим основные зависимости
+      sudo apt update && sudo apt upgrade -y
+      sudo apt install -y python3-pip chromium-browser unzip
+      
+      # Устанавливаем Go инструменты
       go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
-      nuclei -update-templates
-
-      # Install SQLmap
-      pip3 install sqlmap
-
-      # Install Dalfox (XSS)
-      go install github.com/hahwul/dalfox/v2@latest
-
-      # Install Recon Tools
       go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
       go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-
-      echo "✅ All tools installed. Happy hunting."
+      go install -v github.com/projectdiscovery/katana/cmd/katana@latest
+      go install -v github.com/hahwul/dalfox/v2@latest
+      go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
+      go install -v github.com/projectdiscovery/notify/cmd/notify@latest
+      
+      # Устанавливаем Python инструменты
+      pip3 install sqlmap
+      pip3 install dirsearch
+      pip3 install arjun
+      
+      # Обновляем Nuclei templates
+      /home/gitpod/go/bin/nuclei -update-templates
+      
+      # Добавляем пути в PATH
+      echo 'export PATH="$HOME/go/bin:$HOME/.local/bin:$PATH"' >> ~/.bashrc
+      source ~/.bashrc
+      
+      # Создаем директорию для инструментов
+      mkdir -p ~/tools
+      echo "✅ Все инструменты установлены! Счастливой охоты!"
 
     command: |
-      echo "💡 Run 'nuclei -h' or 'sqlmap -h' to start scanning."
+      echo "💡 Доступные команды:"
+      echo "  nuclei -h | sqlmap -h | subfinder -h | httpx -h"
+      echo "  dalfox -h | naabu -h | katana -h | dirsearch -h"
       bash
 
 vscode:
   extensions:
     - ms-python.python
     - github.copilot
+    - projectdiscovery.nuclei
+    - humao.rest-client
+    - me-dut.abyss
