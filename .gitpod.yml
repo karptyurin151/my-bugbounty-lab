@@ -44,4 +44,5 @@ vscode:
     - github.copilot
     - projectdiscovery.nuclei
     - humao.rest-client
-    - me-dut.abyss
+    # - me-dut.abyss  # Remove this line
+    - oderwat.indent-rainbow  # Better syntax highlighter
