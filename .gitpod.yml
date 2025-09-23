@@ -1,50 +1,16 @@
 image: gitpod/workspace-full
 
 tasks:
-  - name: Install Bug Bounty Tools
+  - name: Immunefi Auto Scanner
     init: |
-      echo "🚀 Installing Bug Bounty Toolkit..."
-
-      sudo apt update
-      sudo apt install -y python3-pip chromium-browser unzip libpcap-dev libnet-dev wget git
-
-      # Install Go
-      wget -q https://go.dev/dl/go1.22.3.linux-amd64.tar.gz
-      sudo tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
-      export PATH=$PATH:/usr/local/go/bin
-
-      # Install Go tools
-      go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
-      go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-      go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-      go install -v github.com/projectdiscovery/katana/cmd/katana@latest
-      go install -v github.com/hahwul/dalfox/v2@latest
-      go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
-      go install -v github.com/projectdiscovery/notify/cmd/notify@latest
-
-      # Python tools
-      pip3 install sqlmap
-
-      # dirsearch
-      git clone https://github.com/maurosoria/dirsearch.git ~/tools/dirsearch
-
-      # Nuclei templates (background)
-      nuclei -update-templates -silent &
-
-      echo "✅ Tools installed. Ready to kill."
-
+      echo "🧨 Building Immunefi Auto Scanner..."
+      sudo apt update && sudo apt install -y python3-pip solc
+      pip3 install slither-analyzer mythril echidna
+      pip3 install -r requirements.txt
     command: |
-      export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-      echo 'alias dirsearch="python3 ~/tools/dirsearch/dirsearch.py"' >> ~/.bashrc
-      source ~/.bashrc
-      echo "💡 Available tools:"
-      echo "  nuclei | sqlmap | subfinder | httpx | dalfox | naabu | katana | dirsearch"
-      bash
+      echo "✅ Scanner ready. Run: ./run.sh"
 
 vscode:
   extensions:
     - ms-python.python
-    - github.copilot
-    - projectdiscovery.nuclei
-    - humao.rest-client
-    - oderwat.indent-rainbow
+    - ms-vscode.vscode-json
